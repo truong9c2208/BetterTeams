@@ -250,7 +250,7 @@ maxMove: 0
 # - If this is set to true after a team has multiple owners, they will all retain owner status until they leave the team or do /team setowner (when they do so, they will no longer be an owner but the rest of the team owners will remain owners
 #
 # Possible values: [true, false]
-singleOwner: false
+singleOwner: true
 
 # Used to set if when creating a new team, players must provide a tag for the team as well as the team name
 # - If this is set to false, the team name will be used instead of the team tag if one is not set

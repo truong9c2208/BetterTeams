@@ -24,9 +24,9 @@ public class JoinCommand extends NoTeamSubCommand {
 			return new CommandResponse("join.banned");
 		}
 
-		if (!team.isOpen() && !team.isInvited(p.getUniqueId())) {
-			return new CommandResponse("join.notInvited");
-		}
+		// if (!team.isOpen() && !team.isInvited(p.getUniqueId())) {
+		// 	return new CommandResponse("join.notInvited");
+		// }
 
 		int limit = team.getTeamLimit();
 		if (limit > 0 && limit <= team.getMembers().size()) {

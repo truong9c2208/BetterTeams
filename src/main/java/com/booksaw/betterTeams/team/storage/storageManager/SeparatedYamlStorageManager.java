@@ -1,8 +1,11 @@
 package com.booksaw.betterTeams.team.storage.storageManager;
 
+import com.booksaw.betterTeams.ConfigManager;
 import com.booksaw.betterTeams.Main;
 import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.TeamPlayer;
+import com.booksaw.betterTeams.Utils;
+import com.booksaw.betterTeams.customEvents.CreateTeamEvent;
 import com.booksaw.betterTeams.team.LocationSetComponent;
 import com.booksaw.betterTeams.team.storage.team.SeparatedYamlTeamStorage;
 import com.booksaw.betterTeams.team.storage.team.StoredTeamValue;
@@ -31,6 +34,7 @@ public class SeparatedYamlStorageManager extends YamlStorageManager implements L
 	private final Map<String, UUID> chestClaims = new HashMap<>();
 
 	private final File teamStorageDir;
+	
 
 	public SeparatedYamlStorageManager() {
 		super();
@@ -210,7 +214,8 @@ public class SeparatedYamlStorageManager extends YamlStorageManager implements L
 
 	@Override
 	public String[] sortTeamsByScore() {
-		return sortTeamByX(configuration -> configuration.getInt(StoredTeamValue.SCORE.getReference()), (t1, t2) -> t2.value - t1.value);
+		return sortTeamByX(configuration -> configuration.getInt(StoredTeamValue.SCORE.getReference()),
+				(t1, t2) -> t2.value - t1.value);
 	}
 
 	@Override
@@ -229,7 +234,8 @@ public class SeparatedYamlStorageManager extends YamlStorageManager implements L
 
 	@Override
 	public String[] sortTeamsByMembers() {
-		return sortTeamByX(configuration -> configuration.getStringList("players").size(), (t1, t2) -> t2.value - t1.value);
+		return sortTeamByX(configuration -> configuration.getStringList("players").size(),
+				(t1, t2) -> t2.value - t1.value);
 	}
 
 	private <T> String[] sortTeamByX(ValueSorter<T> valueSorter, Comparator<? super CrossReference<T>> comparator) {
@@ -312,7 +318,8 @@ public class SeparatedYamlStorageManager extends YamlStorageManager implements L
 						yamlConfig.save(f);
 					} catch (IOException e) {
 						Bukkit.getLogger()
-								.warning("Failed to purge the " + storedTeamValue.toString() + "of the team with the file " + f.getPath());
+								.warning("Failed to purge the " + storedTeamValue.toString()
+										+ "of the team with the file " + f.getPath());
 						e.printStackTrace();
 					}
 				}

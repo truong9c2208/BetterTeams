@@ -23,5 +23,4 @@ public class TitlePlaceholderProvider implements IndividualTeamPlayerPlaceholder
 		
 		return player.getTitle();
 	}
-	
 }

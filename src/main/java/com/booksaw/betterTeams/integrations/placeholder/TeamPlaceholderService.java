@@ -24,5 +24,4 @@ public final class TeamPlaceholderService {
 		return enumValue.applyPlaceholderProvider(team, player);
 
 	}
-
 }

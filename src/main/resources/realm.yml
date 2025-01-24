@@ -1,0 +1,16 @@
+realms:
+  kim:
+    display: "&#C0C0C0&lKIM&r"
+    color: "&#C0C0C0"
+  moc:
+    display: "&#228B22MỘC&r"
+    color: "&#228B22"
+  thuy:
+    display: "&#1E90FFTHỦY&r"
+    color: "&#1E90FF"
+  hoa:
+    display: "&#FF4500HỎA&r"
+    color: "&#FF4500"
+  tho:
+    display: "&#8B4513THỔ&r"
+    color: "&#8B4513"

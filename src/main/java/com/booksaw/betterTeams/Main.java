@@ -32,6 +32,8 @@ import com.booksaw.betterTeams.score.ScoreManagement;
 import com.booksaw.betterTeams.team.storage.StorageType;
 import com.booksaw.betterTeams.team.storage.convert.Converter;
 import com.booksaw.betterTeams.team.storage.storageManager.YamlStorageManager;
+import com.booksaw.betterTeams.team.storage.team.SeparatedYamlTeamStorage;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -40,6 +42,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.Map.Entry;
@@ -259,23 +262,22 @@ public class Main extends JavaPlugin {
 
 	public void setupCommands() {
 		teamCommand = new PermissionParentCommand(new CostManager("team"), new CooldownManager("team"), "team");
-		// add all sub commands here
-		teamCommand.addSubCommands(new CreateCommand(teamCommand), new LeaveCommand(), new DisbandCommand(),
+		// add all sub commands here, removed: new AllyChatCommand(teamCommand), new CreateCommand(teamCommand), new LeaveCommand(), new AllyCommand(), new KickCommand(),new HomeCommand(), new SethomeCommand()
+		teamCommand.addSubCommands(new DisbandCommand(),
 				new DescriptionCommand(), new InviteCommand(), new JoinCommand(), new NameCommand(), new OpenCommand(),
-				new InfoCommand(teamCommand), new KickCommand(), new PromoteCommand(), new DemoteCommand(),
-				new HomeCommand(), new SethomeCommand(), new BanCommand(), new UnbanCommand(),
+				new InfoCommand(teamCommand), new PromoteCommand(), new DemoteCommand(), new BanCommand(), new UnbanCommand(),
 				new ChatCommand(teamCommand), new ColorCommand(), new TitleCommand(), new TopCommand(),
-				new BaltopCommand(), new RankCommand(), new DelHome(), new AllyCommand(), new NeutralCommand(),
-				new AllyChatCommand(teamCommand), new ListCommand(), new WarpCommand(), new SetWarpCommand(),
+				new BaltopCommand(), new RankCommand(), new DelHome(), new NeutralCommand(),
+				new ListCommand(), new WarpCommand(), new SetWarpCommand(),
 				new DelwarpCommand(), new WarpsCommand(), new EchestCommand(), new RankupCommand(), new TagCommand());
 
 		if (getConfig().getBoolean("disableCombat")) {
 			teamCommand.addSubCommand(new PvpCommand());
 		}
 		// only used if a team is only allowed a single owner
-		if (getConfig().getBoolean("singleOwner")) {
-			teamCommand.addSubCommand(new SetOwnerCommand());
-		}
+		// if (getConfig().getBoolean("singleOwner")) {
+		// 	teamCommand.addSubCommand(new SetOwnerCommand());
+		// }
 
 		ParentCommand chest = new PermissionParentCommand("chest");
 		chest.addSubCommands(new ChestClaimCommand(), new ChestRemoveCommand(), new ChestRemoveallCommand());
@@ -370,6 +372,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new InventoryManagement(), this);
 		getServer().getPluginManager().registerEvents(new RankupEvents(), this);
 
+		getServer().getPluginManager().registerEvents(new PlayerEvents(), plugin);
 	}
 
 	public void setupMetrics() {
@@ -411,6 +414,19 @@ public class Main extends JavaPlugin {
 
 		Team.setupTeamManager(to);
 		Team.getTeamManager().loadTeams();
+
+		Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+			ConfigManager realmConfig = new ConfigManager("realm", false);
+
+			for (String str : realmConfig.config.getConfigurationSection("realms").getKeys(false)) {
+				File file = new File(SeparatedYamlTeamStorage.getTeamSaveFile(), Utils.stringToUUID(str) + ".yml");
+				if (!file.exists()) {
+					Bukkit.getLogger()
+							.warning("Realm " + str + " does not have a corresponding team file, creating one");
+					Team.getTeamManager().createNewTeam(str, (Player) null);
+				}
+			}
+		});
 	}
 
 	public BooksawCommand getTeamBooksawCommand() {

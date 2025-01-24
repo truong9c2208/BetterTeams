@@ -382,8 +382,8 @@ public class Team {
 
 		this.description = "";
 
-		storage.set(StoredTeamValue.OPEN, false);
-		open = false;
+		storage.set(StoredTeamValue.OPEN, true);
+		open = true;
 
 		storage.set(StoredTeamValue.PVP, false);
 		pvp = false;

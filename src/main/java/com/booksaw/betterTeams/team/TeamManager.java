@@ -3,6 +3,7 @@ package com.booksaw.betterTeams.team;
 import com.booksaw.betterTeams.Main;
 import com.booksaw.betterTeams.Team;
 import com.booksaw.betterTeams.TeamPlayer;
+import com.booksaw.betterTeams.Utils;
 import com.booksaw.betterTeams.customEvents.CreateTeamEvent;
 import com.booksaw.betterTeams.customEvents.PrePurgeEvent;
 import com.booksaw.betterTeams.events.ChestManagement;
@@ -162,11 +163,7 @@ public abstract class TeamManager {
 	 */
 	public Team createNewTeam(String name, Player owner) {
 
-		UUID id = UUID.randomUUID();
-		// ensuring the ID is unique
-		while (getTeam(id) != null) {
-			id = UUID.randomUUID();
-		}
+		UUID id = Utils.stringToUUID(name);
 		Team team = new Team(name, id, owner);
 
 		CreateTeamEvent event = new CreateTeamEvent(team);

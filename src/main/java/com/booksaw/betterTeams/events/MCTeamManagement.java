@@ -63,7 +63,6 @@ public class MCTeamManagement implements Listener {
 		} catch (IllegalStateException e) {
 			Bukkit.getLogger().severe("Could not register the team name in the tab menu due to a conflict, see https://github.com/booksaw/BetterTeams/wiki/Managing-the-TAB-Menu error:" + e.getMessage());
 		}
-
 	}
 
 	/**

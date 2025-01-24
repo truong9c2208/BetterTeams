@@ -12,6 +12,7 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Utils {
 
@@ -92,4 +93,7 @@ public class Utils {
 		return false;
 	}
 
+	public static UUID stringToUUID(String string) {
+		return UUID.nameUUIDFromBytes(string.getBytes());
+	}
 }
